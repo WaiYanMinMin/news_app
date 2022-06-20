@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -7,13 +8,16 @@ import '../screens/homepage.dart';
 
 class ArticleView extends StatefulWidget {
   final String postUrl;
-  ArticleView({required this.postUrl});
+  const ArticleView({
+    Key? key,
+    required this.postUrl,
+  }) : super(key: key);
 
   @override
-  _ArticleViewState createState() => _ArticleViewState();
+  ArticleViewState createState() => ArticleViewState();
 }
 
-class _ArticleViewState extends State<ArticleView> {
+class ArticleViewState extends State<ArticleView> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
   @override
@@ -23,9 +27,9 @@ class _ArticleViewState extends State<ArticleView> {
           backgroundColor: Colors.red,
           elevation: 0,
           centerTitle: true,
-          title: Text('News')),
-      drawer: DrawerBody(),
-      body: Container(
+          title:const  Text('News')),
+      drawer: const DrawerBody(),
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: WebView(

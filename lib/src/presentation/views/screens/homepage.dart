@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/src/data/news_api/article_model.dart';
 
 import 'package:news_app/src/presentation/views/screens/saved_news_screen.dart';
 import 'package:news_app/src/presentation/views/widgets/news_tile.dart';
@@ -16,13 +17,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _loading = true;
-  var newslist;
+  List<Article>? newslist;
 
   void getNews() async {
     News news = News();
     await news.getNews();
     newslist = news.news;
-    
+
     setState(() {
       _loading = false;
     });
@@ -44,8 +45,8 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.red,
           elevation: 0,
           centerTitle: true,
-          title: Text('News')),
-      drawer: DrawerBody(),
+          title: const Text('News')),
+      drawer: const DrawerBody(),
       body: _loading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -53,16 +54,17 @@ class _HomePageState extends State<HomePage> {
           : Container(
               margin: const EdgeInsets.only(top: 16),
               child: ListView.builder(
-                  itemCount: newslist.length,
+                  itemCount: newslist?.length ?? 0,
                   shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
+                  physics: const ClampingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return NewsTile(
-                      imgUrl: newslist[index].urlToImage ?? "",
-                      title: newslist[index].title ?? "",
-                      desc: newslist[index].description ?? "",
-                      content: newslist[index].content ?? "",
-                      posturl: newslist[index].articleUrl ?? "",
+                    return NewsTile( 
+                      imgUrl: newslist?[index].urlToImage ?? "",
+                      title: newslist?[index].title ?? "",
+                      desc: newslist?[index].description ?? "",
+                      content: newslist?[index].content ?? "",
+                      posturl: newslist?[index].articleUrl ?? "",
+                     
                     );
                   }),
             ),
@@ -91,8 +93,8 @@ class _DrawerBodyState extends State<DrawerBody> {
           ),
           GestureDetector(
             onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: ((context) => SavedNewsScreen()))),
-            child: ListTile(
+                MaterialPageRoute(builder: ((context) =>const  SavedNewsScreen()))),
+            child:const ListTile(
               title: Text("Saved"),
             ),
           ),
@@ -104,7 +106,7 @@ class _DrawerBodyState extends State<DrawerBody> {
                   onChanged: (value) {
                     themeChange.darkTheme = value ?? false;
                   }),
-              title: Text("Dark Mode"),
+              title: const Text("Dark Mode"),
             ),
           ),
         ],
