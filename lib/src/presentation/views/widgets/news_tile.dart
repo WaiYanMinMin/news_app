@@ -1,27 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/src/data/news_api/article_model.dart';
+import 'package:news_app/src/presentation/provider/saved_article_provider.dart';
 import 'package:news_app/src/presentation/views/widgets/article_view.dart';
+import 'package:provider/provider.dart';
 
-class NewsTile extends StatelessWidget {
-  final String imgUrl, title, desc, content, posturl;
-
+class NewsTile extends StatefulWidget {
+  final String imgUrl, title, desc, content, posturl, author;
+  final String publishedAt;
   const NewsTile(
       {Key? key,
       required this.imgUrl,
       required this.desc,
       required this.title,
       required this.content,
-      required this.posturl})
+      required this.posturl,
+      required this.author,
+      required this.publishedAt})
       : super(key: key);
 
   @override
+  State<NewsTile> createState() => _NewsTileState();
+}
+
+class _NewsTileState extends State<NewsTile> {
+  @override
   Widget build(BuildContext context) {
+    final savedArticleProvider = Provider.of<SavedArticleProvider>(context);
+    Article article = Article(
+        title: widget.title,
+        description: widget.desc,
+        content: widget.content,
+        urlToImage: widget.imgUrl,
+        articleUrl: widget.posturl,
+        author: widget.author,
+        publishedAt: widget.publishedAt);
     return GestureDetector(
       onTap: () {
+        savedArticleProvider.saveArticles(article);
+
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ArticleView(
-                      postUrl: posturl,
+                      postUrl: widget.posturl,
                     )));
       },
       child: Container(
@@ -41,7 +62,7 @@ class NewsTile extends StatelessWidget {
                 ClipRRect(
                     borderRadius: BorderRadius.circular(6),
                     child: Image.network(
-                      imgUrl,
+                      widget.imgUrl,
                       height: 200,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
@@ -50,14 +71,14 @@ class NewsTile extends StatelessWidget {
                   height: 12,
                 ),
                 Text(
-                  title,
+                  widget.title,
                   maxLines: 2,
                 ),
                 const SizedBox(
                   height: 4,
                 ),
                 Text(
-                  desc,
+                  widget.desc,
                   maxLines: 2,
                 )
               ],

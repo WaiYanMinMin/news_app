@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _loading = true;
+
   List<Article>? newslist;
 
   void getNews() async {
@@ -58,13 +59,14 @@ class _HomePageState extends State<HomePage> {
                   shrinkWrap: true,
                   physics: const ClampingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return NewsTile( 
+                    return NewsTile(
                       imgUrl: newslist?[index].urlToImage ?? "",
                       title: newslist?[index].title ?? "",
                       desc: newslist?[index].description ?? "",
                       content: newslist?[index].content ?? "",
                       posturl: newslist?[index].articleUrl ?? "",
-                     
+                      author: newslist?[index].author ?? "",
+                      publishedAt: newslist?[index].publishedAt ?? "",
                     );
                   }),
             ),
@@ -82,7 +84,7 @@ class DrawerBody extends StatefulWidget {
 class _DrawerBodyState extends State<DrawerBody> {
   @override
   Widget build(BuildContext context) {
-    final themeChange = Provider.of<DarkThemeProvider>(context);
+    final themeChange = Provider.of<DarkThemeProvider>(context, listen: true);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -92,9 +94,9 @@ class _DrawerBodyState extends State<DrawerBody> {
             color: Colors.red,
           ),
           GestureDetector(
-            onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: ((context) =>const  SavedNewsScreen()))),
-            child:const ListTile(
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: ((context) => const SavedNewsScreen()))),
+            child: const ListTile(
               title: Text("Saved"),
             ),
           ),
@@ -102,7 +104,7 @@ class _DrawerBodyState extends State<DrawerBody> {
             onTap: () => {},
             child: ListTile(
               trailing: Checkbox(
-                  value: themeChange.darkTheme,
+                  value: themeChange.getdarkTheme(),
                   onChanged: (value) {
                     themeChange.darkTheme = value ?? false;
                   }),
