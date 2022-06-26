@@ -44,6 +44,7 @@ class _SavedNewsScreenState extends State<SavedNewsScreen> {
             physics: const ClampingScrollPhysics(),
             itemBuilder: (context, index) {
               return NewsTile(
+                savedScrn: false,
                 imgUrl: newslist[index].urlToImage ?? "",
                 title: newslist[index].title ?? "",
                 desc: newslist[index].description ?? "",

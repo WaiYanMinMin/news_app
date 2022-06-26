@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
                   physics: const ClampingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return NewsTile(
+                      savedScrn: true,
                       imgUrl: newslist?[index].urlToImage ?? "",
                       title: newslist?[index].title ?? "",
                       desc: newslist?[index].description ?? "",
@@ -100,16 +101,13 @@ class _DrawerBodyState extends State<DrawerBody> {
               title: Text("Saved"),
             ),
           ),
-          GestureDetector(
-            onTap: () => {},
-            child: ListTile(
-              trailing: Checkbox(
-                  value: themeChange.getdarkTheme(),
-                  onChanged: (value) {
-                    themeChange.darkTheme = value ?? false;
-                  }),
-              title: const Text("Dark Mode"),
-            ),
+          ListTile(
+            trailing: Checkbox(
+                value: themeChange.getdarkTheme(),
+                onChanged: (value) {
+                  themeChange.darkTheme = value ?? false;
+                }),
+            title: const Text("Dark Mode"),
           ),
         ],
       ),
